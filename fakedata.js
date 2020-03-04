@@ -15,7 +15,7 @@ const fakeDatabase = [{
         },
         "phone": "1-770-736-8031 x56442",
         "website": "hildegard.org",
-        "company": {
+        "company1": {
             "name": "Romaguera-Crona",
             "catchPhrase": "Multi-layered client-server neural-net",
             "bs": "harness real-time e-markets"
@@ -61,7 +61,7 @@ const fakeDatabase = [{
         },
         "phone": "1-463-123-4447",
         "website": "ramiro.info",
-        "company": {
+        "company1": {
             "name": "Romaguera-Jacobson",
             "catchPhrase": "Face to face bifurcated interface",
             "bs": "e-enable strategic applications"
@@ -84,7 +84,7 @@ const fakeDatabase = [{
         },
         "phone": "493-170-9623 x156",
         "website": "kale.biz",
-        "company": {
+        "company1": {
             "name": "Robel-Corkery",
             "catchPhrase": "Multi-tiered zero tolerance productivity",
             "bs": "transition cutting-edge web services"
@@ -107,7 +107,7 @@ const fakeDatabase = [{
         },
         "phone": "(254)954-1289",
         "website": "demarco.info",
-        "company": {
+        "company1": {
             "name": "Keebler LLC",
             "catchPhrase": "User-centric fault-tolerant solution",
             "bs": "revolutionize end-to-end systems"
@@ -130,7 +130,7 @@ const fakeDatabase = [{
         },
         "phone": "1-477-935-8478 x6430",
         "website": "ola.org",
-        "company": {
+        "company1": {
             "name": "Considine-Lockman",
             "catchPhrase": "Synchronised bottom-line interface",
             "bs": "e-enable innovative applications"
@@ -153,7 +153,7 @@ const fakeDatabase = [{
         },
         "phone": "210.067.6132",
         "website": "elvis.io",
-        "company": {
+        "company1": {
             "name": "Johns Group",
             "catchPhrase": "Configurable multimedia task-force",
             "bs": "generate enterprise e-tailers"
@@ -176,7 +176,7 @@ const fakeDatabase = [{
         },
         "phone": "586.493.6943 x140",
         "website": "jacynthe.com",
-        "company": {
+        "company1": {
             "name": "Abernathy Group",
             "catchPhrase": "Implemented secondary concept",
             "bs": "e-enable extensible e-tailers"
@@ -199,7 +199,7 @@ const fakeDatabase = [{
         },
         "phone": "(775)976-6794 x41206",
         "website": "conrad.com",
-        "company": {
+        "company1": {
             "name": "Yost and Sons",
             "catchPhrase": "Switchable contextually-based project",
             "bs": "aggregate real-time technologies"
@@ -222,7 +222,7 @@ const fakeDatabase = [{
         },
         "phone": "024-648-3804",
         "website": "ambrose.net",
-        "company": {
+        "company1": {
             "name": "Hoeger LLC",
             "catchPhrase": "Centralized empowering task-force",
             "bs": "target end-to-end models"
@@ -230,4 +230,4 @@ const fakeDatabase = [{
     }
 ]
 
-module.exports =fakeDatabase
+module.exports = fakeDatabase

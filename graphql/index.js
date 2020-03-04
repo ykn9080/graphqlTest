@@ -1,12 +1,36 @@
 var Graphql = require("graphql");
 var { makeExecutableSchema } = require("graphql-tools");
 var fakeDatabase = require("../fakedata.js");
+//var { company, menu, control, accessGroup } = require("../model/models");
+var company = require("../model/models")["company"];
+var menu = require("../model/models")["Menu"];
+var user = require("../model/user")
 const typeDefs = `
+type company{
+   id: String,
+    name: String,
+    language: String,
+    module: String
+}
+type user{
+  _id:ID,
+  id:String,
+  password:String!,
+  email: String!,
+  name: String!,
+  group: String,
+  comp: company
+}
+type menu{
+  _id:ID!,
+   id: String,
+    pid: String
+}
 type geo{
   lat:Float,
   lng:Float
 }
-type company{
+type company1{
   name:String
   catchPhrase:String
   bs:String
@@ -18,7 +42,7 @@ type address{
   zipcode:String
   geo:geo
 }
-type user{
+type user1{
   id:Int
   name:String
   username:String
@@ -26,17 +50,30 @@ type user{
   address:address
   phone:String
   website:String
-  company:company
+  company1:company1
 }
 type Query{
-  user(id:Int!):user
-  allUser:[user]
+  user1(id:Int!):user1
+  allUser:[user1]
+  companies:[company]
+  users:[user]
+  getuser(_id:ID!):user
+  getmenu(_id:ID!):menu
+  menues:[menu]
 }
+ input MenuInput {
+        id: String!
+    }
+
+    type Mutation {
+        createMenu(input: MenuInput): menu
+    }
+
 `;
 
 const resolvers = {
     Query: {
-        user(_, { id }) {
+        user1(_, { id }) {
             const data = Object.keys(fakeDatabase).filter(element => {
                 if (fakeDatabase[element].id == id) {
                     return element;
@@ -46,77 +83,33 @@ const resolvers = {
         },
         allUser() {
             return fakeDatabase;
+        },
+        companies() {
+            return company.find({});
+        },
+        users() {
+            return user.find({});
+        },
+        async getuser(parent, { _id }) {
+            //return find(user, { id: id });
+            return await user.findById(_id);
+        },
+        async getmenu(parent, { _id }) {
+            //return find(user, { id: id });
+            return await menu.findById(_id);
+        },
+        async menues() {
+            //return find(user, { id: id });
+            return await menu.find({});
         }
-    }
+    },
+    Mutation: {
+        async createMenu(root, { input }) {
+            return await menu.create(input);
+        }
+    } // new
 };
 
-
-
-// const geoType = new Graphql.GraphQLObjectType({ // Object 타입을 정의합니다.
-//     name: "geo",
-//     fields: {
-//         lat: { type: Graphql.GraphQLFloat },
-//         lng: { type: Graphql.GraphQLFloat }
-//     }
-// });
-// const companyType = new Graphql.GraphQLObjectType({
-//     name: "company",
-//     fields: {
-//         name: { type: Graphql.GraphQLString },
-//         catchPhrase: { type: Graphql.GraphQLString },
-//         bs: { type: Graphql.GraphQLString }
-//     }
-// });
-// const addressType = new Graphql.GraphQLObjectType({
-//     name: "address",
-//     fields: {
-//         street: { type: Graphql.GraphQLString },
-//         suite: { type: Graphql.GraphQLString },
-//         city: { type: Graphql.GraphQLString },
-//         zipcode: { type: Graphql.GraphQLString },
-//         geo: { type: geoType } // Object 형태일 경우 새로 GrapgQLObject를 만들어서 지정해 줍니다.
-//     }
-// });
-// const userType = new Graphql.GraphQLObjectType({
-//     name: "User",
-//     fields: {
-//         id: { type: Graphql.GraphQLInt },
-//         name: { type: Graphql.GraphQLString },
-//         username: { type: Graphql.GraphQLString },
-//         email: { type: Graphql.GraphQLString },
-//         address: { type: addressType }, // Object 형태일 경우 새로 GrapgQLObject를 만들어서 지정해 줍니다.
-//         phone: { type: Graphql.GraphQLString },
-//         website: { type: Graphql.GraphQLString },
-//         company: { type: companyType } // Object 형태일 경우 새로 GrapgQLObject를 만들어서 지정해 줍니다.
-//     }
-// });
-// var queryType = new Graphql.GraphQLObjectType({
-//     name: "Query",
-//     fields: {
-//         user: {
-//             type: userType,
-//             args: { // 쿼리문 중 인자를 정의하는 곳
-//                 id: { type: Graphql.GraphQLInt }
-//             },
-//             resolve: function(obj, { id }, ctx, b) { // 실제로 쿼리 될때 호출되는 메소드
-//                 const data = Object.keys(fakeDatabase).filter(element => {
-//                     if (fakeDatabase[element].id == id) {
-//                         return element;
-//                     }
-//                 });
-//                 return fakeDatabase[data];
-//             }
-//         },
-//         allUser: {
-//             type: new Graphql.GraphQLList(userType),
-//             resolve: function(obj, args, ctx, _) {
-//                 return fakeDatabase;
-//             }
-//         }
-//     }
-// });
-
-//var schema = new Graphql.GraphQLSchema({ query: queryType });
 const schema = makeExecutableSchema({
     typeDefs,
     resolvers
