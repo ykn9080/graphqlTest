@@ -1,5 +1,3 @@
-const User = require('./user');
-
 var mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const models = {};
@@ -10,44 +8,19 @@ models.Menu, model.Control등으로 접근
 /router/reuseCRUD.js에서 접근처리
 */
 const menuSchema = new Schema({
-    id: String,
-    pid: String,
-    comp: { type: Schema.ObjectId, ref: 'Company' },
     title: String,
     desc: String,
-    creator: [{ type: Schema.ObjectId, ref: 'User' }],
     seq: Number,
     private: Boolean,
-    access: [{ type: Schema.ObjectId, ref: 'accessGroup' }],
+    pid: { type: Schema.Types.ObjectId, ref: 'Menu' },
+    comp: { type: Schema.Types.ObjectId, ref: 'Company' },
+    creator: { type: Schema.Types.ObjectId, ref: 'User' },
+    access: [{ type: Schema.Types.ObjectId, ref: 'AccessGroup' }],
     layout: [{
-        ctrid: { type: Schema.ObjectId, ref: 'control' },
+        ctrid: { type: Schema.Types.ObjectId, ref: 'Control' },
         seq: Number,
         size: Number,
     }]
-});
-
-const accessGroupSchema = new Schema({
-    comp: { type: Schema.ObjectId, ref: 'Company' },
-    name: String,
-    desc: String,
-    users: [{ type: Schema.ObjectId, ref: 'User' }],
-    subGroup: [{ type: Schema.ObjectId, ref: 'accessGroup' }]
-});
-
-const controlSchema = new Schema({
-    comp: { type: Schema.ObjectId, ref: 'Company' },
-    type: String,
-    title: String,
-    desc: String,
-    created: { type: Date, default: Date.now },
-    originctrid: { type: Schema.ObjectId, ref: 'control' },
-    access: [{ type: Schema.ObjectId, ref: 'accessGroup' }],
-    private: Boolean
-});
-const simpleSchema = new Schema({
-    name: String,
-    company: { type: Schema.ObjectId, ref: 'Company' },
-    subgroup: [{ type: Schema.ObjectId, ref: 'simple' }]
 });
 const companySchema = new Schema({
     id: String,
@@ -55,10 +28,42 @@ const companySchema = new Schema({
     language: String,
     module: String
 });
-models.Control = mongoose.model("control", controlSchema);
-models.Menu = mongoose.model("menu", menuSchema);
-models.accessGroup = mongoose.model("accessGroup", accessGroupSchema);
-models.simple = mongoose.model("simple", simpleSchema);
-models.company = mongoose.model("Company", companySchema);
+var userSchema = mongoose.Schema({                 
+    id:String,
+    password:String,
+    email: String,
+    name: String,
+    group: String,
+    comp: { type: Schema.Types.ObjectId, ref: 'Company' }
+});
+const accessGroupSchema = new Schema({
+    comp: { type: Schema.Types.ObjectId, ref: 'Company' },
+    name: String,
+    desc: String,
+    users: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    subGroup: [{ type: Schema.Types.ObjectId, ref: 'AccessGroup' }]
+});
+
+const controlSchema = new Schema({
+    type: String,
+    title: String,
+    desc: String,
+    created: { type: Date, default: Date.now },
+    comp: { type: Schema.Types.ObjectId, ref: 'Company' },
+    origincontrol: { type: Schema.Types.ObjectId, ref: 'Control' },
+    access: [{ type: Schema.Types.ObjectId, ref: 'AccessGroup' }],
+    private: Boolean
+});
+const simpleSchema = new Schema({
+    name: String,
+    company: { type: Schema.Types.ObjectId, ref: 'Company' },
+    subgroup: [{ type: Schema.Types.ObjectId, ref: 'Simple' }]
+});
+models.Control = mongoose.model("Control", controlSchema);
+models.Company = mongoose.model('Company', companySchema);
+models.User = mongoose.model('User', userSchema);
+models.Menu = mongoose.model("Menu", menuSchema);
+models.AccessGroup = mongoose.model("AccessGroup", accessGroupSchema);
+models.Simple = mongoose.model("Simple", simpleSchema);
 
 module.exports = models;
